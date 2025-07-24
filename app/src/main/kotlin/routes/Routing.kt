@@ -40,7 +40,7 @@ fun Application.configureRouting() {
             {
                 // TODO: search the data between start and end timestamp and fill paymentsSummaryResponse
             }
-            var paymentsSummaryResponse: PaymentsSummaryResponse = PaymentsSummaryResponse(null, null)
+            var paymentsSummaryResponse = PaymentsSummaryResponse(null, null)
             call.respond(paymentsSummaryResponse)
         }
     }

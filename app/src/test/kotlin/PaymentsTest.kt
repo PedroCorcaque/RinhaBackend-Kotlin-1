@@ -1,14 +1,10 @@
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.java.Java
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import org.junit.jupiter.api.Test
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.HttpMethod
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlin.random.Random
