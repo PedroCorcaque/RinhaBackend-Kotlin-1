@@ -19,29 +19,37 @@ fun Application.configureRouting() {
         post("/payments") {
             try {
                 val payment = call.receive<Payments>()
-                // TODO: works with the payment
+                if (payment.correlationId.isNullOrBlank() || payment.amount.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@post
+                }
                 call.respond(HttpStatusCode.OK)
             } catch (ex: IllegalStateException) {
+                ex.printStackTrace()
                 call.respond(HttpStatusCode.BadRequest)
             } catch (ex: SerializationException) {
+                ex.printStackTrace()
                 call.respond(HttpStatusCode.BadRequest)
             }
         }
 
         get("/payments-summary") {
-            val startTimestamp: String? = call.request.queryParameters["from"]
-            val endTimestamp: String? = call.request.queryParameters["to"]
-
-            if (startTimestamp == null && endTimestamp == null)
-            {
-                // TODO: return all time data and fill paymentsSummaryResponse
+            try {
+                val response = PaymentsSummaryResponse(
+                    default = PaymentsSummaryResponse.DefaultProcessorResponse(
+                        totalRequests = 0,
+                        totalAmount = 0.0
+                    ),
+                    fallback = PaymentsSummaryResponse.FallbackProcessorResponse(
+                        totalRequests = 0,
+                        totalAmount = 0.0
+                    )
+                )
+                call.respond(response)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError)
             }
-            else
-            {
-                // TODO: search the data between start and end timestamp and fill paymentsSummaryResponse
-            }
-            var paymentsSummaryResponse = PaymentsSummaryResponse(null, null)
-            call.respond(paymentsSummaryResponse)
         }
     }
 }

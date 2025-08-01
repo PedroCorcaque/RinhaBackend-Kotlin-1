@@ -4,27 +4,23 @@
 
 [versions]
 kotlin = "2.1.10"
-kotlinxDatetime = "0.6.1"
-kotlinxSerializationJSON = "1.7.2"
-kotlinxCoroutines = "1.8.1"
 junit = "5.10.0"
 slf4j = "2.0.9"
 testjunit = "2.2.0"
 ktor_core = "3.1.1"
 
 [libraries]
-kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
-kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJSON" }
-kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinTestJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "testjunit" }
 kotlinJupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 kotlinJupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 ktorCore = { module = "io.ktor:ktor-client-core-jvm", version.ref = "ktor_core" }
 ktorCoreServer = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor_core" }
 ktorClient = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor_core" }
+ktorServerContentNegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor_core" }
 ktorSerialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor_core" }
 ktorClientEngine = { module = "io.ktor:ktor-client-java", version.ref = "ktor_core" }
 slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+nettyJvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor_core" }
 
 # Libraries can be bundled together for easier import
 [bundles]

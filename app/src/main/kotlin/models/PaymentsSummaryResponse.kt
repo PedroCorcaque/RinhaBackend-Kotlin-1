@@ -9,13 +9,13 @@ data class PaymentsSummaryResponse (
 ) {
     @Serializable
     data class DefaultProcessorResponse(
-        val totalRequests: Int,
-        val totalAmount: Double
+        val totalRequests: Int? = null,
+        val totalAmount: Double? = null
     )
 
     @Serializable
     data class FallbackProcessorResponse(
-        val totalRequests: Int,
-        val totalAmount: Double
+        val totalRequests: Int? = null,
+        val totalAmount: Double? = null
     )
 }
