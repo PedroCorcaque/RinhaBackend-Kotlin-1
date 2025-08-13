@@ -10,9 +10,18 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import io.lettuce.core.RedisClient
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 
 fun Application.configureRouting() {
+    val redisHost = System.getenv("REDIS_HOST") ?: "localhost"
+    val redisPort = System.getenv("REDIS_PORT") ?: "6379"
+
+    val redisClient = RedisClient.create("redis://$redisHost:$redisPort")
+    val connection = redisClient.connect()
+    val redis = connection.sync()
+
     routing {
         staticResources("static", "static")
 
@@ -23,6 +32,10 @@ fun Application.configureRouting() {
                     call.respond(HttpStatusCode.BadRequest)
                     return@post
                 }
+
+                val jsonPayment = Json.encodeToString(payment)
+                redis.lpush("queue:payments", jsonPayment)
+
                 call.respond(HttpStatusCode.OK)
             } catch (ex: IllegalStateException) {
                 ex.printStackTrace()

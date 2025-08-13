@@ -15,10 +15,14 @@ dependencies {
 
     implementation(libs.slf4jNop)
 
+    // Redis client Lettuce
+    implementation(libs.lettuceCore)
+
     // Ktor Client
-    testImplementation(libs.ktorCore)
-    testImplementation(libs.ktorClient)
-    testImplementation(libs.ktorClientEngine)
+    implementation(libs.ktorCore)
+    implementation(libs.ktorClient)
+    implementation(libs.ktorClientEngine)
+    implementation(libs.ktorCio)
 
     // Kotlin Tests
     testImplementation(libs.kotlinTestJunit)

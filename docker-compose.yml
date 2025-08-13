@@ -1,5 +1,81 @@
+version: '3.9'
 
+services:
+  backend01: &backend
+    hostname: backend01
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rinhabackend-kotlin-1
+    environment:
+      - PROCESSOR_DEFAULT_URL=http://payment-processor-default:8080
+      - PROCESSOR_FALLBACK_URL=http://payment-processor-fallback:8080
+    depends_on:
+      - redis
+    networks:
+      - payment-processor
+      - rinha-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "100MB"
+
+  backend02:
+    <<: *backend
+    hostname: backend02
+
+  lb:
+    image: nginx:1.27.0-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "9999:80"
+    networks:
+      - payment-processor
+      - rinha-net
+    depends_on:
+      - backend01
+      - backend02
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "15MB"
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - rinha-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "30MB"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["java", "-cp", "app.jar", "br.com.pedrocorcaque.app.worker.WorkerKt"]
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - rinha-net
+    depends_on:
+      - redis
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "50MB"
 
 networks:
   payment-processor:
     external: true
+  rinha-net:
+    driver: bridge
